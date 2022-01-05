@@ -1,0 +1,47 @@
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td,
+table th {
+  border-bottom: 1px solid #ddd;
+  padding: 0px 4px;
+  height: 48px;
+  text-align: center;
+  font-size: 14px;
+}
+
+table tbody tr:hover {
+  background-color: #fff6e3;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+/* 673AB7 */
+
+.searchFilter {
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.searchFilter:focus {
+  outline: none;
+}
+.searchFilterOuter {
+  padding-bottom: 2px;
+  border-bottom: solid #3f51b5 2px !important;
+}
+
+.tableButton{
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 3px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+}
