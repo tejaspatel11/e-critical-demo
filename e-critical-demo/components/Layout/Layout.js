@@ -5,21 +5,21 @@ const Layout = (props) => {
         <>
             <header className='header px-2'>
                 <div className='d-flex align-items-center'>
-                    <i className='fas fa-bars pe-3'></i>
+                    <span className='fas fa-bars pe-3'></span>
                     <div className='fw-bolder fs-5'>Patients</div>
                 </div>
                 <div className='d-flex pe-3 align-items-center'>
                     <div className='fs-5 fw-bolder px-3'>Medicity Hospital</div>
                     <div className='px-3 d-flex align-items-center'>
-                        <i className='fas fa-user-circle fs-4'></i>
+                        <span className='fas fa-user-circle fs-4'></span>
                         <div className='px-1'>Megha Soni</div>
-                        <i className='fas fa-sort-down ps-1'></i>
+                        <span className='fas fa-sort-down ps-1'></span>
                     </div>
-                    <i className="fas fa-bell fs-5 mx-3 position-relative">
-                        <span class="position-absolute top-0 start-100 translate-middle bg-danger rounded-circle">
+                    <span className="fas fa-bell fs-5 mx-3 position-relative">
+                        <span className="position-absolute top-0 start-100 translate-middle bg-danger rounded-circle">
                             5
                         </span>
-                    </i>
+                    </span>
                 </div>
             </header>
             <main className='main BgColour'>

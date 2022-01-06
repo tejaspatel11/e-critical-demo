@@ -1,14 +1,21 @@
 import React from 'react'
 import ContextMenu from './contextMenu'
+import ContextRight from './ContextRight'
 
 const Action = () => {
     return (
         <>
-            <ContextMenu>
+            {/* <ContextMenu>
                 <span style={{ fontWeight: "bold", cursor: 'pointer' }}>
                     &#8285;
                 </span>
-            </ContextMenu>
+            </ContextMenu> */}
+
+            <ContextRight type='onLeftClick'>
+                <span style={{ fontWeight: "bold", cursor: 'pointer' }}>
+                    &#8285;
+                </span>
+            </ContextRight>
         </>
     )
 }

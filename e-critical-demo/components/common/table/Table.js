@@ -1,11 +1,9 @@
 import React, { useMemo } from "react";
 import { useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
-// import { COLUMNS, GROUPED_COLUMNS } from "./columns";
-// import MOCK_DATA from "../../../public/MOCK_DATA.json";
 import SearchFilter from "./SearchFilter";
 import Card from "../Card";
 import Button from "../Button";
-import ContextMenu from "./contextMenu";
+import ContextRight from "./ContextRight";
 
 export const TableWithPagination = ({ tableData, tableColumns }) => {
     const columns = useMemo(() => tableColumns, []);
@@ -34,15 +32,15 @@ export const TableWithPagination = ({ tableData, tableColumns }) => {
     } = tableInstance
 
     const { globalFilter, pageIndex, pageSize } = state
-    const rightClickHandler = (event)=>{
+    const rightClickHandler = (event) => {
         event.preventDefault()
     }
 
     return (
         <>
             <div className="d-flex justify-content-between mb-2">
-            <SearchFilter filter={globalFilter} setFilter={setGlobalFilter} />
-            <Button><span className="fa-plus fas"></span> Add Patient</Button>
+                <SearchFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                <Button><span className="fa-plus fas"></span> Add Patient</Button>
             </div>
             <Card>
                 <table {...getTableProps()}>
@@ -64,11 +62,11 @@ export const TableWithPagination = ({ tableData, tableColumns }) => {
                         {page.map(row => {
                             prepareRow(row)
                             return (
+
                                 <tr onContextMenu={rightClickHandler} {...row.getRowProps()}>
                                     {row.cells.map((cell) => {
-                                        return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                        return <td {...cell.getCellProps()}><ContextRight>{cell.render('Cell')}</ContextRight></td>
                                     })}
-
                                 </tr>
                             )
                         })}
