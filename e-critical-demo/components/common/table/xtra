@@ -1,0 +1,17 @@
+    const listenScrollEvent = (event) => {
+        const myDiv = document.querySelector('#scroll1');
+        let islast = false;
+
+        if (myDiv.clientHeight + myDiv.scrollTop > myDiv.scrollHeight) {
+            myDiv.scrollTo(0, 0)
+            nextPage()
+            islast = true;
+            console.log(islast);
+            if (islast) {
+                myDiv.scrollTo(0, 0)
+                nextPage()
+                islast = false;
+            }
+        }
+
+    }

@@ -1,16 +1,18 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import SearchFilter from "./SearchFilter";
 import Card from "../Card";
 import Button from "../Button";
 import ContextRight from "./ContextRight";
 
-export const TableWithPagination = ({ tableData, tableColumns }) => {
+export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPaginated = true, }) => {
     const columns = useMemo(() => tableColumns, []);
-    const data = useMemo(() => tableData, []);
+    const data = useMemo(() => tableData, [tableData]);
     const tableInstance = useTable({
         columns: columns,
         data: data,
+        // manualPagination: true,
+        // pageCount: controlledPageCount,
         initialState: { pageSize: 12 }
     }, useGlobalFilter, useSortBy, usePagination);
     const {
@@ -36,43 +38,65 @@ export const TableWithPagination = ({ tableData, tableColumns }) => {
         event.preventDefault()
     }
 
+    const listenScrollEvent = (event) => {
+        const myDiv = document.querySelector('#scroll1');
+        if (myDiv.clientHeight + myDiv.scrollTop > myDiv.scrollHeight) {
+            myDiv.scrollTo(0, 0)
+            nextPage()
+            console.log('scrolled to bottom')
+        }
+    }
+
+
+    useEffect(() => {
+        document.querySelector('#scroll1').addEventListener('scroll', listenScrollEvent);
+        //ReactDOM.findDOMNode(this.refs.category_scroll).addEventListener('scroll', listenScrollEvent);
+    }, [])
+
+    // useEffect(() => {
+    //     fetchData && fetchData({ pageIndex, pageSize });
+    // }, [fetchData, pageIndex, pageSize]);
     return (
         <>
             <div className="d-flex justify-content-between mb-2">
                 <SearchFilter filter={globalFilter} setFilter={setGlobalFilter} />
                 <Button><span className="fa-plus fas"></span> Add Patient</Button>
             </div>
-            <Card>
-                <table {...getTableProps()}>
-                    <thead>
-                        {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {
-                                    headerGroup.headers.map((column) => (
-                                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}
-                                            <span> {column.isSorted ? (column.isSortedDesc ? <span>&#8681;</span> : <span>&#8679;</span>) : ''}</span> </th>
-                                    ))
-                                }
+            <Card className="h-100">
+                <div className="overflow-auto" id="scroll1" onScroll={listenScrollEvent} >
+                    <table {...getTableProps()}>
+                        <thead>
+                            {headerGroups.map((headerGroup) => (
+                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                    {
+                                        headerGroup.headers.map((column) => (
+                                            <th {...column.getHeaderProps({
+                                                style: { minWidth: column.minWidth, maxWidth: column.maxWidth, width: column.width },
+                                            }, column.getSortByToggleProps())}>{column.render('Header')}
+                                                <span> {column.isSorted ? (column.isSortedDesc ? <span>&#8681;</span> : <span>&#8679;</span>) : ''}</span> </th>
+                                        ))
+                                    }
 
-                            </tr>
-                        ))}
-
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {page.map(row => {
-                            prepareRow(row)
-                            return (
-
-                                <tr onContextMenu={rightClickHandler} {...row.getRowProps()}>
-                                    {row.cells.map((cell) => {
-                                        return <td {...cell.getCellProps()}><ContextRight>{cell.render('Cell')}</ContextRight></td>
-                                    })}
                                 </tr>
-                            )
-                        })}
+                            ))}
 
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                            {page.map(row => {
+                                prepareRow(row)
+                                return (
+
+                                    <tr onContextMenu={rightClickHandler} {...row.getRowProps()}>
+                                        {row.cells.map((cell) => {
+                                            return <td {...cell.getCellProps()}><ContextRight>{cell.render('Cell')}</ContextRight></td>
+                                        })}
+                                    </tr>
+                                )
+                            })}
+
+                        </tbody>
+                    </table>
+                </div>
                 <div className="d-flex justify-content-end align-items-center mx-1 my-3">
                     <span className="mx-2">
                         Items Per Page:{' '}

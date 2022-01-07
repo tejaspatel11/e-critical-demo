@@ -9,7 +9,6 @@ table th {
   border-bottom: 1px solid #ddd;
   padding: 0px 4px;
   height: 48px;
-  text-align: center;
   font-size: 14px;
 }
 
@@ -20,7 +19,6 @@ table tbody tr:hover {
 table th {
   padding-top: 12px;
   padding-bottom: 12px;
-  text-align: center;
 }
 /* 673AB7 */
 
