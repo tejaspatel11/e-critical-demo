@@ -24,7 +24,7 @@ function Hospitals() {
 
             setData(data);
 
-            setPageCount(data.paging.pages);    
+            setPageCount(10);    
             setLoading(false);
         } catch (e) {
             console.log("Error while fetching", e);
@@ -39,6 +39,7 @@ function Hospitals() {
             // You could fetch your data from literally anywhere,
             // even a server. But for this example, we'll just fake it.
             // Give this fetch an ID
+            console.log("check",pageIndex,pageSize);
             const fetchId = ++fetchIdRef.current;
             setLoading(true);
             if (fetchId === fetchIdRef.current) {

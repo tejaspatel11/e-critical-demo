@@ -5,7 +5,7 @@ import Card from "../Card";
 import Button from "../Button";
 import ContextRight from "./ContextRight";
 
-export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPaginated = true, }) => {
+export const TableWithPagination = ({ tableData, tableColumns, fetchData, pageCount: controlledPageCount, isPaginated = true, }) => {
     const columns = useMemo(() => tableColumns, []);
     const data = useMemo(() => tableData, [tableData]);
     const tableInstance = useTable({
@@ -13,7 +13,7 @@ export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPagi
         data: data,
         // manualPagination: true,
         // pageCount: controlledPageCount,
-        initialState: { pageSize: 12 }
+        initialState: { pageSize: 15 }
     }, useGlobalFilter, useSortBy, usePagination);
     const {
         getTableProps,
@@ -67,11 +67,11 @@ export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPagi
                     <table {...getTableProps()}>
                         <thead>
                             {headerGroups.map((headerGroup) => (
-                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                <tr className="d-flex" {...headerGroup.getHeaderGroupProps()}>
                                     {
                                         headerGroup.headers.map((column) => (
                                             <th {...column.getHeaderProps({
-                                                style: { minWidth: column.minWidth, maxWidth: column.maxWidth, width: column.width },
+                                                style: { flex: column.flex },
                                             }, column.getSortByToggleProps())}>{column.render('Header')}
                                                 <span> {column.isSorted ? (column.isSortedDesc ? <span>&#8681;</span> : <span>&#8679;</span>) : ''}</span> </th>
                                         ))
@@ -86,9 +86,9 @@ export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPagi
                                 prepareRow(row)
                                 return (
 
-                                    <tr onContextMenu={rightClickHandler} {...row.getRowProps()}>
+                                    <tr className="d-flex" onContextMenu={rightClickHandler} {...row.getRowProps()}>
                                         {row.cells.map((cell) => {
-                                            return <td {...cell.getCellProps()}><ContextRight>{cell.render('Cell')}</ContextRight></td>
+                                            return <td className="d-flex align-items-center" style={{ flex: cell.column.flex }} {...cell.getCellProps()}><ContextRight>{cell.render('Cell')}</ContextRight></td>
                                         })}
                                     </tr>
                                 )
@@ -97,28 +97,30 @@ export const TableWithPagination = ({ tableData, tableColumns, fetchData, isPagi
                         </tbody>
                     </table>
                 </div>
-                <div className="d-flex justify-content-end align-items-center mx-1 my-3">
-                    <span className="mx-2">
-                        Items Per Page:{' '}
-                        <input type="number" defaultValue={pageSize} onChange={e => {
-                            setPageSize(Number(e.target.value))
-                        }} style={{ width: "50px" }} />
-                    </span>
-                    <span className="mx-2">
-                        {' '}
-                        <strong>{pageIndex + 1}/{pageOptions.length}</strong>{' '}
-                    </span>
-                    <button className="fa-angle-double-left fas border-0 bg-transparent mx-2 fs-5" onClick={() => gotoPage(0)} disabled={!canPreviousPage}></button>
-                    <button className="fa-angle-left fas border-0 bg-transparent mx-2 fs-5" onClick={() => previousPage()} disabled={!canPreviousPage}></button>
-                    <button className="fa-angle-right fas border-0 bg-transparent mx-2 fs-5" onClick={() => nextPage()} disabled={!canNextPage}></button>
-                    <button className="fa-angle-double-right fas border-0 bg-transparent fs-5 mx-2" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}></button>
-                    <span>
-                        | Go To Page: {' '}
-                        <input type="number" defaultValue={pageIndex + 1} onChange={e => {
-                            gotoPage(Number(e.target.value - 1))
-                        }} style={{ width: "50px" }} />
-                    </span>
-                </div>
+                {Boolean(isPaginated) && (
+                    <div className="d-flex justify-content-end align-items-center mx-1 my-3">
+                        <span className="mx-2">
+                            Items Per Page:{' '}
+                            <input type="number" defaultValue={pageSize} onChange={e => {
+                                setPageSize(Number(e.target.value))
+                            }} style={{ width: "50px" }} />
+                        </span>
+                        <span className="mx-2">
+                            {' '}
+                            <strong>{pageIndex + 1}/{pageOptions.length}</strong>{' '}
+                        </span>
+                        <button className="fa-angle-double-left fas border-0 bg-transparent mx-2 fs-5" onClick={() => gotoPage(0)} disabled={!canPreviousPage}></button>
+                        <button className="fa-angle-left fas border-0 bg-transparent mx-2 fs-5" onClick={() => previousPage()} disabled={!canPreviousPage}></button>
+                        <button className="fa-angle-right fas border-0 bg-transparent mx-2 fs-5" onClick={() => nextPage()} disabled={!canNextPage}></button>
+                        <button className="fa-angle-double-right fas border-0 bg-transparent fs-5 mx-2" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}></button>
+                        <span>
+                            | Go To Page: {' '}
+                            <input type="number" defaultValue={pageIndex + 1} onChange={e => {
+                                gotoPage(Number(e.target.value - 1))
+                            }} style={{ width: "50px" }} />
+                        </span>
+                    </div>
+                )}
             </Card>
         </>
     );

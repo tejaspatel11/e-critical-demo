@@ -8,8 +8,9 @@ table td,
 table th {
   border-bottom: 1px solid #ddd;
   padding: 0px 4px;
-  height: 48px;
+  min-height: 48px;
   font-size: 14px;
+  word-break: break-all;
 }
 
 table tbody tr:hover {
